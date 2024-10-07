@@ -12,6 +12,7 @@ public class GameBoard {
 
     private final Cell[][] board;
     private final int landMineCount;
+    private GameStatus gameStatus;
 
     public GameBoard(GameLevel gameLevel) {
         int rowSize = gameLevel.getRowSize();
@@ -19,16 +20,43 @@ public class GameBoard {
         board = new Cell[rowSize][colSize];
 
         this.landMineCount = gameLevel.getLandMineCount();
+        this.gameStatus = GameStatus.IN_PROGRESS;
     }
 
     public void flagAt(CellPosition cellPosition) {
         Cell cell = findCell(cellPosition);
         cell.flag();
+        checkIfGameIsOver();
     }
 
     public void openAt(CellPosition cellPosition) {
+        if (isLandMineCell(cellPosition)) {
+            openOneCellAt(cellPosition);
+            changeGameStatusToLose();
+            return;
+        }
+        openSurroundedCells(cellPosition);
+        checkIfGameIsOver();
+    }
+
+    private void checkIfGameIsOver() {
+        if (isAllCellChecked()) {
+            changeGameStatusToWin();
+        }
+    }
+
+    private void changeGameStatusToWin() {
+        gameStatus = GameStatus.WIN;
+    }
+
+    private void changeGameStatusToLose() {
+        gameStatus = GameStatus.LOSE;
+    }
+
+    public void openOneCellAt(CellPosition cellPosition) {
         Cell cell = findCell(cellPosition);
         cell.open();
+
     }
 
     public void openSurroundedCells(CellPosition cellPosition) {
@@ -39,7 +67,7 @@ public class GameBoard {
             return;
         }
 
-        openAt(cellPosition);
+        openOneCellAt(cellPosition);
 
         if (doesCellHaveLandMineCount(cellPosition)) {
             return;
@@ -78,6 +106,7 @@ public class GameBoard {
     }
 
     public void initializeGame() {
+        gameStatus = GameStatus.IN_PROGRESS;
         CellPositions cellPositions = CellPositions.from(board);
 
         initializeEmptyCells(cellPositions);
@@ -149,5 +178,17 @@ public class GameBoard {
 
     public CellSnapshot getSnapshot(CellPosition cellPosition) {
         return findCell(cellPosition).getCellSnapshot();
+    }
+
+    public boolean isInProgress() {
+        return gameStatus == GameStatus.IN_PROGRESS;
+    }
+
+    public boolean isLoseStatus() {
+        return gameStatus == GameStatus.LOSE;
+    }
+
+    public boolean isWinStatus() {
+        return gameStatus == GameStatus.WIN;
     }
 }

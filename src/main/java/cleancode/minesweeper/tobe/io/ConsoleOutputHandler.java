@@ -41,14 +41,6 @@ public class ConsoleOutputHandler implements OutputHandler {
         System.out.println();
     }
 
-    private String generateColAlphabets(GameBoard board) {
-        List<String> alphabets = IntStream.range(0, board.getColSize())
-                .mapToObj(index -> (char) ('a' + index))
-                .map(Object::toString)
-                .toList();
-        return String.join(" ", alphabets);
-    }
-
     @Override
     public void printGameWinningComment() {
         System.out.println("지뢰를 모두 찾았습니다. GAME CLEAR!");
@@ -77,5 +69,13 @@ public class ConsoleOutputHandler implements OutputHandler {
     @Override
     public void printSimpleMessage(String message) {
         System.out.println(message);
+    }
+
+    private String generateColAlphabets(GameBoard board) {
+        List<String> alphabets = IntStream.range(0, board.getColSize())
+                .mapToObj(index -> (char) ('a' + index))
+                .map(Object::toString)
+                .toList();
+        return String.join(" ", alphabets);
     }
 }

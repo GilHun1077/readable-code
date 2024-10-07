@@ -52,6 +52,21 @@ public class Minesweeper implements GameInitializable, GameRunnable {
         }
     }
 
+    private CellPosition getCellInputFromUser() {
+        outputHandler.printCommentForSelectingCell();
+        CellPosition cellPosition = inputHandler.getCellPositionFromUser();
+        if (gameBoard.isInvalidCellPosition(cellPosition)) {
+            throw new IllegalArgumentException("잘못된 좌표를 선택하셨습니다.");
+        }
+
+        return cellPosition;
+    }
+
+    private UserAction getUserActionInputFromUser() {
+        outputHandler.printCommentForUserAction();
+        return inputHandler.getUserActionFromUser();
+    }
+
     private void actOnCell(CellPosition cellPosition, UserAction userAction) {
         if (doesUserChooseToPlantFlag(userAction)) {
             gameBoard.flagAt(cellPosition);
@@ -66,34 +81,19 @@ public class Minesweeper implements GameInitializable, GameRunnable {
         throw new GameException("잘못된 번호를 선택하셨습니다.");
     }
 
-    private boolean doesUserChooseToOpenCell(UserAction userAction) {
-        return userAction == UserAction.OPEN;
-    }
-
     private boolean doesUserChooseToPlantFlag(UserAction userAction) {
         return userAction == UserAction.FLAG;
     }
 
-    private UserAction getUserActionInputFromUser() {
-        outputHandler.printCommentForUserAction();
-        return inputHandler.getUserActionFromUser();
-    }
-
-    private CellPosition getCellInputFromUser() {
-        outputHandler.printCommentForSelectingCell();
-        CellPosition cellPosition = inputHandler.getCellPositionFromUser();
-        if (gameBoard.isInvalidCellPosition(cellPosition)) {
-            throw new IllegalArgumentException("잘못된 좌표를 선택하셨습니다.");
-        }
-
-        return cellPosition;
-    }
-
-    private boolean doesUserLoseTheGame() {
-        return gameBoard.isLoseStatus();
+    private boolean doesUserChooseToOpenCell(UserAction userAction) {
+        return userAction == UserAction.OPEN;
     }
 
     private boolean doesUserWinTheGame() {
         return gameBoard.isWinStatus();
+    }
+
+    private boolean doesUserLoseTheGame() {
+        return gameBoard.isLoseStatus();
     }
 }

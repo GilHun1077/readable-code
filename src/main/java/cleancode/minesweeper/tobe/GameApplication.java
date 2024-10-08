@@ -10,9 +10,9 @@ public class GameApplication {
 
     public static void main(String[] args) {
         GameConfig gameConfig = new GameConfig(
-                new Beginner(),
-                new ConsoleInputHandler(),
-                new ConsoleOutputHandler()
+            new Beginner(),
+            new ConsoleInputHandler(),
+            new ConsoleOutputHandler()
         );
 
         Minesweeper minesweeper = new Minesweeper(gameConfig);

@@ -22,4 +22,13 @@ public class StudyCafeLockerPasses {
                 .orElse(null);
     }
 
+    public StudyCafeLockerPass getLockerPassFrom(StudyCafePassType passType, int duration) {
+        return lockerPasses.stream()
+                .filter(option ->
+                        option.getPassType() == passType
+                                && option.getDuration() == duration
+                )
+                .findFirst()
+                .orElse(null);
+    }
 }

@@ -32,7 +32,7 @@ public class InputHandler {
         return passes.get(selectedIndex);
     }
 
-    public boolean isNotUserUseLocker() {
+    public boolean doesUserNotUsingLocker() {
         String userInput = SCANNER.nextLine();
         return "2".equals(userInput);
     }

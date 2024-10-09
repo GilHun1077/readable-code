@@ -20,27 +20,30 @@ public class StudyCafePassMachine {
             outputHandler.askPassTypeSelection();
             StudyCafePassType studyCafePassType = inputHandler.getPassTypeSelectingUserAction();
 
-            StudyCafePasses studyCafePasses = new StudyCafePasses();
-            List<StudyCafePass> studyCafePassCandidates = studyCafePasses.selectStudyCafePassesFrom(studyCafePassType);
+            StudyCafePass studyCafePass = selectStudyCafePassFrom(studyCafePassType);
 
-            outputHandler.showPassListForSelection(studyCafePassCandidates);
-            StudyCafePass selectedPass = inputHandler.getSelectPass(studyCafePassCandidates);
-
-            StudyCafeLockerPasses studyCafeLockerPasses = new StudyCafeLockerPasses();
-            StudyCafeLockerPass lockerPass = studyCafeLockerPasses.getLockerPassFrom(selectedPass);
+            StudyCafeLockerPass lockerPass = studyCafePass.getLockerPass();
             if (lockerPass != null) {
                 outputHandler.askLockerPass(lockerPass);
-                if (inputHandler.isNotUserUseLocker()) {
+                if (inputHandler.doesUserNotUsingLocker()) {
                     lockerPass = null;
                 }
             }
-            outputHandler.showPassOrderSummary(selectedPass, lockerPass);
+            outputHandler.showPassOrderSummary(studyCafePass, lockerPass);
 
         } catch (AppException e) {
             outputHandler.showSimpleMessage(e.getMessage());
         } catch (Exception e) {
             outputHandler.showSimpleMessage("알 수 없는 오류가 발생했습니다.");
         }
+    }
+
+    private StudyCafePass selectStudyCafePassFrom(StudyCafePassType studyCafePassType) {
+        StudyCafePasses studyCafePasses = new StudyCafePasses();
+        List<StudyCafePass> studyCafePassCandidates = studyCafePasses.selectStudyCafePassesFrom(studyCafePassType);
+
+        outputHandler.showPassListForSelection(studyCafePassCandidates);
+        return inputHandler.getSelectPass(studyCafePassCandidates);
     }
 
 }

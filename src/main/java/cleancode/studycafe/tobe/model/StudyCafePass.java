@@ -26,7 +26,7 @@ public class StudyCafePass {
         return duration;
     }
 
-    public int getPrice() {
+    private int getPrice() {
         return price;
     }
 
@@ -47,4 +47,16 @@ public class StudyCafePass {
         return "";
     }
 
+    public int calculateDiscountPrice() {
+        return (int) (getPrice() * getDiscountRate());
+    }
+
+    public int calculateTotalPrice() {
+        return getPrice() - calculateDiscountPrice();
+    }
+
+    public StudyCafeLockerPass getLockerPass() {
+        StudyCafeLockerPasses studyCafeLockerPasses = new StudyCafeLockerPasses();
+        return studyCafeLockerPasses.getLockerPassFrom(passType, duration);
+    }
 }

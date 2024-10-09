@@ -7,27 +7,50 @@ public class StudyCafePass {
     private final int price;
     private final double discountRate;
 
-    private StudyCafePass(StudyCafePassType passType, int duration, int price, double discountRate) {
+    private StudyCafeLockerPassType lockerPassType;
+
+    private StudyCafePass(StudyCafePassType passType, int duration, int price, double discountRate, StudyCafeLockerPassType lockerPassType) {
         this.passType = passType;
         this.duration = duration;
         this.price = price;
         this.discountRate = discountRate;
+        this.lockerPassType = lockerPassType;
     }
 
-    public static StudyCafePass of(StudyCafePassType passType, int duration, int price, double discountRate) {
-        return new StudyCafePass(passType, duration, price, discountRate);
+    public static StudyCafePass of(StudyCafePassType passType, int duration, int price, double discountRate, StudyCafeLockerPassType lockerPassType) {
+        return new StudyCafePass(passType, duration, price, discountRate, lockerPassType);
+    }
+
+    public int calculateDiscountPrice() {
+        return (int) (getPrice() * getDiscountRate());
+    }
+
+    public int calculateTotalPrice() {
+        int lockerPrice = 0;
+        if (doesLockerUse()) {
+            lockerPrice = getLockerPass().getPrice();
+        }
+        return getPrice() - calculateDiscountPrice() - lockerPrice;
+    }
+
+    public void updateLockerPassType(StudyCafeLockerPassType lockerPassType) {
+        this.lockerPassType = lockerPassType;
+    }
+
+    public boolean doesLockerUsable() {
+        return lockerPassType == StudyCafeLockerPassType.USABLE;
+    }
+
+    public boolean doesLockerUse() {
+        return lockerPassType == StudyCafeLockerPassType.USE;
+    }
+
+    public boolean hasDiscountPrice() {
+        return calculateDiscountPrice() > 0;
     }
 
     public StudyCafePassType getPassType() {
         return passType;
-    }
-
-    public int getDuration() {
-        return duration;
-    }
-
-    private int getPrice() {
-        return price;
     }
 
     public double getDiscountRate() {
@@ -47,16 +70,15 @@ public class StudyCafePass {
         return "";
     }
 
-    public int calculateDiscountPrice() {
-        return (int) (getPrice() * getDiscountRate());
-    }
-
-    public int calculateTotalPrice() {
-        return getPrice() - calculateDiscountPrice();
-    }
-
     public StudyCafeLockerPass getLockerPass() {
-        StudyCafeLockerPasses studyCafeLockerPasses = new StudyCafeLockerPasses();
-        return studyCafeLockerPasses.getLockerPassFrom(passType, duration);
+        return StudyCafeLockerPasses.getLockerPassFrom(passType, duration);
+    }
+
+    public String getLockerPassInfo() {
+        return getLockerPass().display();
+    }
+
+    private int getPrice() {
+        return price;
     }
 }

@@ -11,18 +11,7 @@ public class StudyCafeLockerPasses {
             StudyCafeLockerPass.of(FIXED, 12, 30000)
     );
 
-
-    public StudyCafeLockerPass getLockerPassFrom(StudyCafePass selectedPass) {
-        return lockerPasses.stream()
-                .filter(option ->
-                        option.getPassType() == selectedPass.getPassType()
-                                && option.getDuration() == selectedPass.getDuration()
-                )
-                .findFirst()
-                .orElse(null);
-    }
-
-    public StudyCafeLockerPass getLockerPassFrom(StudyCafePassType passType, int duration) {
+    public static StudyCafeLockerPass getLockerPassFrom(StudyCafePassType passType, int duration) {
         return lockerPasses.stream()
                 .filter(option ->
                         option.getPassType() == passType

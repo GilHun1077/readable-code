@@ -21,16 +21,9 @@ public class StudyCafePassMachine {
             StudyCafePassType studyCafePassType = inputHandler.getPassTypeSelectingUserAction();
 
             StudyCafePass studyCafePass = selectStudyCafePassFrom(studyCafePassType);
+            updateStudyCafeLockerPassAt(studyCafePass);
 
-            StudyCafeLockerPass lockerPass = studyCafePass.getLockerPass();
-            if (lockerPass != null) {
-                outputHandler.askLockerPass(lockerPass);
-                if (inputHandler.doesUserNotUsingLocker()) {
-                    lockerPass = null;
-                }
-            }
-            outputHandler.showPassOrderSummary(studyCafePass, lockerPass);
-
+            outputHandler.showPassOrderSummary(studyCafePass);
         } catch (AppException e) {
             outputHandler.showSimpleMessage(e.getMessage());
         } catch (Exception e) {
@@ -39,11 +32,18 @@ public class StudyCafePassMachine {
     }
 
     private StudyCafePass selectStudyCafePassFrom(StudyCafePassType studyCafePassType) {
-        StudyCafePasses studyCafePasses = new StudyCafePasses();
-        List<StudyCafePass> studyCafePassCandidates = studyCafePasses.selectStudyCafePassesFrom(studyCafePassType);
+        List<StudyCafePass> studyCafePassCandidates = StudyCafePasses.selectStudyCafePassesFrom(studyCafePassType);
 
         outputHandler.showPassListForSelection(studyCafePassCandidates);
         return inputHandler.getSelectPass(studyCafePassCandidates);
+    }
+
+    private void updateStudyCafeLockerPassAt(StudyCafePass studyCafePass) {
+        if (studyCafePass.doesLockerUsable()) {
+            outputHandler.askLockerPass(studyCafePass.getLockerPass());
+            StudyCafeLockerPassType lockerPassType = inputHandler.getLockerPassTypeSelectingUserAction();
+            studyCafePass.updateLockerPassType(lockerPassType);
+        }
     }
 
 }

@@ -55,11 +55,11 @@ public class ConsoleOutputHandler implements OutputHandler {
         }
 
         if (studyCafePass.hasDiscountPrice()) {
-            System.out.println("이벤트 할인 금액: " + studyCafePass.calculateDiscountPrice() + "원");
+            System.out.println("이벤트 할인 금액: " + String.format("%,d", studyCafePass.calculateDiscountPrice()) + "원");
         }
 
         int totalPrice = studyCafePass.calculateTotalPrice();
-        System.out.println("총 결제 금액: " + totalPrice + "원");
+        System.out.println("총 결제 금액: " + String.format("%,d", totalPrice) + "원");
         System.out.println();
     }
 }

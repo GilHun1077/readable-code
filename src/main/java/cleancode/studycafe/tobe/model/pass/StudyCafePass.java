@@ -7,4 +7,5 @@ public interface StudyCafePass {
     int getDuration();
 
     int getPrice();
+
 }

@@ -10,7 +10,7 @@ public class EmptyCell implements Cell {
     }
 
     @Override
-    public boolean hasLandMindCount() {
+    public boolean hasLandMineCount() {
         return false;
     }
 

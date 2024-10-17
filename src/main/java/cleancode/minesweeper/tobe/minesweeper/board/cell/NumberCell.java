@@ -15,7 +15,7 @@ public class NumberCell implements Cell {
     }
 
     @Override
-    public boolean hasLandMindCount() {
+    public boolean hasLandMineCount() {
         return true;
     }
 

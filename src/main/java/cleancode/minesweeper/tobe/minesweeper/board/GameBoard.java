@@ -9,7 +9,6 @@ import cleancode.minesweeper.tobe.minesweeper.board.position.RelativePosition;
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.List;
-import java.util.Stack;
 
 public class GameBoard {
 
@@ -208,7 +207,7 @@ public class GameBoard {
     }
 
     private boolean doesCellHaveLandMineCount(CellPosition cellPosition) {
-        return findCell(cellPosition).hasLandMindCount();
+        return findCell(cellPosition).hasLandMineCount();
     }
 
     private boolean isOpenedCell(CellPosition cellPosition) {
